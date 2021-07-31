@@ -8,12 +8,26 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    var stockManager: StockManager?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        stockManager = StockManager(networker: Networker())
+        
+        loadData()
     }
-
-
+    
+    private func loadData() {
+        stockManager?.getStocks(exchanges: ["NYSE"]) { result in
+            switch result {
+            case .success(let stocks):
+                print(stocks)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
 
